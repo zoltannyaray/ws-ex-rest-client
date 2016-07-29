@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="jerseyClient" class="com.sun.jersey.api.client.Client" factory-method="create" />
+
+	<bean id="calculateWebResource" factory-bean="jerseyClient" factory-method="resource">
+		<constructor-arg index="0" value="http://localhost:8080/rest-service/rest/calculator/calculate"></constructor-arg>
+	</bean>
+
+
+</beans>

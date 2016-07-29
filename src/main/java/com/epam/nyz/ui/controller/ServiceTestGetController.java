@@ -9,22 +9,12 @@ import com.epam.nyz.ui.model.ServiceTestForm;
 import com.epam.nyz.ui.model.ServiceTestResult;
 
 @Controller
-@RequestMapping(path="/service-test", method=RequestMethod.GET)
+@RequestMapping(path = "/service-test", method = RequestMethod.GET)
 public class ServiceTestGetController {
 
-    @ModelAttribute
-    public ServiceTestForm getServiceTestForm(){
-        return new ServiceTestForm();
-    }
-    
-    @ModelAttribute
-    public ServiceTestResult getServiceTestResult(){
-        return new ServiceTestResult();
-    }
-    
     @RequestMapping
-    public String getView(){
+    public String getView(@ModelAttribute ServiceTestForm serviceTestForm, @ModelAttribute ServiceTestResult serviceTestResult) {
         return "service-test-form";
     }
-    
+
 }

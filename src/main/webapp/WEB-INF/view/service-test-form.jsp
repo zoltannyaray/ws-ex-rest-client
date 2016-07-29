@@ -17,7 +17,7 @@
 		<input type="submit">
 	</form:form>
 
-	<c:if test="not empty serviceTestResult.result">
+	<c:if test="${not empty serviceTestResult.result}">
 	result: ${serviceTestResult.result}
 	</c:if>
 

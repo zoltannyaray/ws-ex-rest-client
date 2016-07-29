@@ -11,11 +11,22 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<glassfish.directory>C:/progs/glassfish4</glassfish.directory>
+		<jetty.http.port>8081</jetty.http.port>
 	</properties>
 
 	<build>
 		<finalName>rest-client</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.0.M0</version>
+				<configuration>
+					<webApp>
+						<contextPath>/rest-client</contextPath>
+					</webApp>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>

@@ -20,20 +20,21 @@ import com.epam.nyz.ui.model.ServiceTestResult;
 public class ServiceTestPostController {
 
     private CalculatorService calculatorService;
-    
+
     @Autowired
     public ServiceTestPostController(CalculatorService calculatorService) {
         this.calculatorService = calculatorService;
     }
 
     @ModelAttribute
-    public void getForm(@ModelAttribute @Valid ServiceTestForm serviceTestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        if(!bindingResult.hasErrors()){
-            ServiceTestResult serviceTestResult = new ServiceTestResult(String.valueOf(calculatorService.calculate(new CalculateRequest(serviceTestForm.getExpression())).getResult()));
+    public void populateResult(@ModelAttribute @Valid ServiceTestForm serviceTestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        ServiceTestResult serviceTestResult = new ServiceTestResult();
+        if (!bindingResult.hasErrors()) {
+            serviceTestResult.setResult(String.valueOf(calculatorService.calculate(new CalculateRequest(serviceTestForm.getExpression())).getResult()));
             redirectAttributes.addFlashAttribute(serviceTestResult);
         }
     }
-    
+
     @RequestMapping
     public String getView(@ModelAttribute @Valid ServiceTestForm serviceTestForm, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){

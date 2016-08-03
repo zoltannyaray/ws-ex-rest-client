@@ -10,8 +10,6 @@
 	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<glassfish.directory>C:/progs/glassfish4</glassfish.directory>
-		<jetty.http.port>8081</jetty.http.port>
 	</properties>
 
 	<build>
@@ -22,57 +20,10 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.4.0.M0</version>
 				<configuration>
-					<webApp>
-						<contextPath>/rest-client</contextPath>
-					</webApp>
+					<httpConnector>
+						<port>8081</port>
+					</httpConnector>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.4.0.M0</version>
-				<configuration>
-					<scanIntervalSeconds>2</scanIntervalSeconds>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.glassfish.maven.plugin</groupId>
-				<artifactId>maven-glassfish-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<user>admin</user>
-					<adminPassword>admin</adminPassword>
-					<domain>
-						<name>domain1</name>
-						<adminPort>4848</adminPort>
-						<httpPort>8080</httpPort>
-						<httpsPort>8443</httpsPort>
-					</domain>
-					<glassfishDirectory>${glassfish.directory}</glassfishDirectory>
-					<domainDirectory>${glassfish.directory}/glassfish/domains</domainDirectory>
-					<components>
-						<component>
-							<name>rest-client</name>
-							<artifact>target/rest-client.war</artifact>
-						</component>
-					</components>
-				</configuration>
-				<executions>
-					<execution>
-						<id>glassfish-deploy</id>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-						<phase>package</phase>
-					</execution>
-					<execution>
-						<id>glassfish-undeploy</id>
-						<goals>
-							<goal>undeploy</goal>
-						</goals>
-						<phase>clean</phase>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -90,6 +41,11 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>javax.json</groupId>
+			<artifactId>javax.json-api</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>

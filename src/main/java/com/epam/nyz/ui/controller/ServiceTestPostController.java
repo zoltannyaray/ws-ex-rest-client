@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.epam.nyz.backend.model.CalculateRequest;
+import com.epam.nyz.backend.model.CalculateResult;
 import com.epam.nyz.backend.service.CalculatorService;
 import com.epam.nyz.ui.model.ServiceTestForm;
 import com.epam.nyz.ui.model.ServiceTestResult;
@@ -27,22 +28,22 @@ public class ServiceTestPostController {
     }
 
     @ModelAttribute
-    public void populateResult(@ModelAttribute @Valid ServiceTestForm serviceTestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public void serviceTestResult(@Valid ServiceTestForm serviceTestForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         ServiceTestResult serviceTestResult = new ServiceTestResult();
         if (!bindingResult.hasErrors()) {
-            serviceTestResult.setResult(String.valueOf(calculatorService.calculate(new CalculateRequest(serviceTestForm.getExpression())).getResult()));
+            CalculateRequest calculateRequest = new CalculateRequest(serviceTestForm.getExpression());
+            CalculateResult calculateResult = calculatorService.calculate(calculateRequest);
+            serviceTestResult.setResult(String.valueOf(calculateResult.getResult()));
             redirectAttributes.addFlashAttribute(serviceTestResult);
+        } else {
+            redirectAttributes.addFlashAttribute(serviceTestForm);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.serviceTestForm", bindingResult);
         }
     }
 
     @RequestMapping
-    public String getView(@ModelAttribute @Valid ServiceTestForm serviceTestForm, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return "service-test-form";
-        }
-        else {
-            return "redirect:/service-test";
-        }
+    public String getView(@Valid ServiceTestForm serviceTestForm, BindingResult bindingResult) {
+        return "redirect:/service-test";
     }
 
 }

@@ -1,6 +1,7 @@
 package com.epam.nyz.ui.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,8 +13,19 @@ import com.epam.nyz.ui.model.ServiceTestResult;
 @RequestMapping(path = "/service-test", method = RequestMethod.GET)
 public class ServiceTestGetController {
 
+    
+    @ModelAttribute
+    public ServiceTestForm serviceTestForm(){
+        return new ServiceTestForm();
+    }
+    
+    @ModelAttribute
+    public ServiceTestResult serviceTestResult(){
+        return new ServiceTestResult();
+    }
+    
     @RequestMapping
-    public String getView(@ModelAttribute ServiceTestForm serviceTestForm, @ModelAttribute ServiceTestResult serviceTestResult) {
+    public String getView() {
         return "service-test-form";
     }
 

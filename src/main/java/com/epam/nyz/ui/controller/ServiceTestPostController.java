@@ -13,6 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.epam.nyz.backend.model.CalculateRequest;
 import com.epam.nyz.backend.model.CalculateResult;
 import com.epam.nyz.backend.service.CalculatorService;
+import com.epam.nyz.backend.service.exception.CalculatorServiceClientException;
+import com.epam.nyz.backend.service.exception.CalculatorServiceException;
+import com.epam.nyz.ui.model.ServiceTestError;
+import com.epam.nyz.ui.model.ServiceTestErrorType;
 import com.epam.nyz.ui.model.ServiceTestForm;
 import com.epam.nyz.ui.model.ServiceTestResult;
 
@@ -32,9 +36,19 @@ public class ServiceTestPostController {
         ServiceTestResult serviceTestResult = new ServiceTestResult();
         if (!bindingResult.hasErrors()) {
             CalculateRequest calculateRequest = new CalculateRequest(serviceTestForm.getExpression());
-            CalculateResult calculateResult = calculatorService.calculate(calculateRequest);
-            serviceTestResult.setResult(String.valueOf(calculateResult.getResult()));
-            redirectAttributes.addFlashAttribute(serviceTestResult);
+            try {
+                CalculateResult calculateResult = calculatorService.calculate(calculateRequest);
+                serviceTestResult.setResult(String.valueOf(calculateResult.getResult()));
+                redirectAttributes.addFlashAttribute(serviceTestResult);
+            }
+            catch (CalculatorServiceException e) {
+                if(e instanceof CalculatorServiceClientException){
+                    redirectAttributes.addFlashAttribute(new ServiceTestError(ServiceTestErrorType.CLIENT_ERROR));
+                }
+                else {
+                    redirectAttributes.addFlashAttribute(new ServiceTestError(ServiceTestErrorType.SERVER_ERROR));
+                }
+            }
         } else {
             redirectAttributes.addFlashAttribute(serviceTestForm);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.serviceTestForm", bindingResult);

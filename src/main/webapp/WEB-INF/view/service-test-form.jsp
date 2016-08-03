@@ -13,12 +13,27 @@
 		<form:label path="expression"></form:label>
 		<br>
 		<form:input path="expression" />
-		<form:errors path="expression">Expression has errors!</form:errors>
+		<form:errors path="expression">expression has errors!</form:errors>
 		<input type="submit">
 	</form:form>
 
 	<c:if test="${not empty serviceTestResult.result}">
 	result: ${serviceTestResult.result}
+	</c:if>
+
+	
+	<c:if test="${not empty serviceTestError}">
+		<c:choose>
+			<c:when test="${serviceTestError.errorType eq 'CLIENT_ERROR'}">
+				calculator service error: client error
+			</c:when>
+			<c:when test="${serviceTestError.errorType eq 'SERVER_ERROR'}">
+				calculator service error: server error
+			</c:when>
+			<c:otherwise>
+				calculator service error
+			</c:otherwise>	
+		</c:choose>
 	</c:if>
 
 </body>
